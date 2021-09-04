@@ -1,1 +1,1 @@
-![Démo](public/capture.png)
+![Démo](public/capture-demo.png)
