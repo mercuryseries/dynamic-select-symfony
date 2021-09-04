@@ -34,7 +34,7 @@
                 .then(response => response.text())
                 .then((html) => {
                     const parser = new DOMParser();
-	                const doc = parser.parseFromString(html, 'text/html');
+                    const doc = parser.parseFromString(html, 'text/html');
                     const newCityFormFieldEl = doc.getElementById('ticket_form_city');
 
                     newCityFormFieldEl.addEventListener('change', function(e) {
