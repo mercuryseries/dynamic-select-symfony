@@ -19,33 +19,44 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(Request $request): Response
     {
-        $builder = $this->createFormBuilder();
+        $builder = $this->createFormBuilder(['name' => null, 'country' => null, 'city' => null]);
 
         $builder
             ->add('name')
             ->add('country', EntityType::class, [
-                'placeholder' => 'Choose a country',
                 'class' => Country::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Choose a country',
                 'query_builder' => fn (CountryRepository $countryRepository) =>
-                $countryRepository->findOrderedByAscNameQueryBuilder(),
-                'choice_label' => 'name'
+                $countryRepository->findOrderedByAscNameQueryBuilder()
             ]);
+
+        $formModifier = function (FormInterface $form, Country $country = null) {
+            $cities = null === $country ? [] : $country->getCities();
+
+            $form->add('city', EntityType::class, [
+                'class' => City::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Choose a city',
+                'choices' => $cities
+            ]);
+        };
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
-                $form = $event->getForm();
-
+            function (FormEvent $event) use ($formModifier) {
                 $data = $event->getData();
 
-                $country = $data->getCountry();
-                $cities = null === $country ? [] : $country->getCities();
+                $formModifier($event->getForm(), $data['country']);
+            }
+        );
 
-                $form->add('city', EntityType::class, [
-                    'class' => City::class,
-                    'placeholder' => 'Choose a city',
-                    'choices' => $cities,
-                ]);
+        $builder->get('country')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formModifier) {
+                $country = $event->getForm()->getData();
+
+                $formModifier($event->getForm()->getParent(), $country);
             }
         );
 
@@ -54,7 +65,6 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd('hello');
         }
 
         return $this->renderForm('home.html.twig', compact('form'));

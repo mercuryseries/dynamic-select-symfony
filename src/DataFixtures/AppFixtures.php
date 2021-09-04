@@ -59,15 +59,15 @@ class AppFixtures extends Fixture
 
         $abidjan = new City;
         $abidjan->setName('Abidjan');
-        $abidjan->setCountry($canada);
+        $abidjan->setCountry($coteDivoire);
 
         $yamoussoukro = new City;
         $yamoussoukro->setName('Yamoussoukro');
-        $yamoussoukro->setCountry($canada);
+        $yamoussoukro->setCountry($coteDivoire);
 
         $bouake = new City;
         $bouake->setName('Bouaké');
-        $bouake->setCountry($canada);
+        $bouake->setCountry($coteDivoire);
 
         $manager->persist($coteDivoire);
         $manager->persist($abidjan);

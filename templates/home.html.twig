@@ -6,8 +6,28 @@
 	<h1>S'enregistrer</h1>
 
 	{{ form_start(form) }}
-	    {{ form_widget(form) }}
+        {{ form_widget(form) }}
 
         <button type="submit">S'enregistrer</button>
 	{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script>
+        $(document).on('change', '#form_country', function() {
+            const $country = $('#form_country');
+
+            const $form = $(this).closest('form');
+
+            $.ajax({
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: $form.serializeArray(),
+                success: function (html) {
+                	$('#form_city').replaceWith($(html).find('#form_city'));
+                }
+            });
+        });
+	</script>
 {% endblock %}
