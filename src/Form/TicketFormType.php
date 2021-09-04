@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\City;
 use App\Entity\Country;
 use App\Entity\Ticket;
+use App\Repository\CityRepository;
 use App\Repository\CountryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -16,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TicketFormType extends AbstractType
 {
+    public function __construct(private CityRepository $cityRepository){}
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -32,11 +35,12 @@ class TicketFormType extends AbstractType
             ]);
 
         $formModifier = function (FormInterface $form, Country $country = null) {
-            $cities = null === $country ? [] : $country->getCities();
+            $cities = $country === null ? [] : $this->cityRepository->findByCountryOrderedByAscName($country);
 
             $form->add('city', EntityType::class, [
                 'class' => City::class,
                 'choice_label' => 'name',
+                'disabled' => $country === null,
                 'placeholder' => 'Choose a city',
                 'choices' => $cities
             ]);

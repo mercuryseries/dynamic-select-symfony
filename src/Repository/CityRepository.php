@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\City;
+use App\Entity\Country;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,10 +21,14 @@ class CityRepository extends ServiceEntityRepository
         parent::__construct($registry, City::class);
     }
 
-    public function findOrderedByAscNameQueryBuilder(): QueryBuilder
+    public function findByCountryOrderedByAscName(Country $country): array
     {
         return $this->createQueryBuilder('c')
-            ->orderBy('c.name', 'ASC');
+            ->andWhere('c.country = :country')
+            ->setParameter('country', $country)
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     // /**
