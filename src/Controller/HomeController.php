@@ -29,6 +29,7 @@ class HomeController extends AbstractController
             ])
             ->add('city', EntityType::class, [
                 'placeholder' => 'Choose a city',
+                'disabled' => true,
                 'class' => City::class,
                 'query_builder' => function (CityRepository $cityRepository) {
                     return $cityRepository->createQueryBuilder('u')
