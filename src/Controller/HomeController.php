@@ -19,6 +19,7 @@ class HomeController extends AbstractController
         $form = $this->createFormBuilder()
             ->add('name')
             ->add('country', EntityType::class, [
+                'placeholder' => 'Choose a country',
                 'class' => Country::class,
                 'query_builder' => function (CountryRepository $countryRepository) {
                     return $countryRepository->createQueryBuilder('u')
@@ -27,6 +28,7 @@ class HomeController extends AbstractController
                 'choice_label' => 'name'
             ])
             ->add('city', EntityType::class, [
+                'placeholder' => 'Choose a city',
                 'class' => City::class,
                 'query_builder' => function (CityRepository $cityRepository) {
                     return $cityRepository->createQueryBuilder('u')
