@@ -3,7 +3,7 @@
 {% block title 'Home' %}
 
 {% block body %}
-	<h1>S'enregistrer</h1>
+	<h1>Laisser un message</h1>
 
 	{{ form_start(form) }}
         {{ form_widget(form) }}
@@ -13,21 +13,27 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script>
-        $(document).on('change', '#form_country', function() {
-            const $country = $('#form_country');
+        document.addEventListener('DOMContentLoaded', function() {
+            const countrySelectEl = document.getElementById('form_country');
 
-            const $form = $(this).closest('form');
+            countrySelectEl.addEventListener('change', function(e) {
+                const formEl = countrySelectEl.closest('form');
 
-            $.ajax({
-                url: $form.attr('action'),
-                type: $form.attr('method'),
-                data: $form.serializeArray(),
-                success: function (html) {
-                	$('#form_city').replaceWith($(html).find('#form_city'));
-                }
-            });
+                fetch(formEl.action, {
+                    method: formEl.method,
+                    body: new FormData(formEl)
+                })
+                .then(response => response.text())
+                .then((html) => {
+                    var parser = new DOMParser();
+	                var doc = parser.parseFromString(html, 'text/html');
+                    document.getElementById('form_city').replaceWith(doc.getElementById('form_city'));
+                })
+                .catch(function (err) {
+                    console.warn('Something went wrong.', err);
+                });
+            })
         });
 	</script>
 {% endblock %}
