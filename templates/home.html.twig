@@ -33,14 +33,21 @@
                 })
                 .then(response => response.text())
                 .then((html) => {
-                    var parser = new DOMParser();
-	                var doc = parser.parseFromString(html, 'text/html');
-                    document.getElementById('ticket_form_city').replaceWith(doc.getElementById('ticket_form_city'));
+                    const parser = new DOMParser();
+	                const doc = parser.parseFromString(html, 'text/html');
+                    const newCityFormFieldEl = doc.getElementById('ticket_form_city');
+
+                    newCityFormFieldEl.addEventListener('change', function(e) {
+                        e.target.classList.remove('is-invalid');
+                    });
+
+                    document.getElementById('ticket_form_city').replaceWith(newCityFormFieldEl);
+
                 })
                 .catch(function (err) {
                     console.warn('Something went wrong.', err);
                 });
-            })
+            });
         });
 	</script>
 {% endblock %}
