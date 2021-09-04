@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\CityRepository;
-use App\Repository\CountryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,10 +9,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(CityRepository $cityRepository, CountryRepository $countryRepository): Response
+    public function index(): Response
     {
-        dd($cityRepository->findAll(), $countryRepository->findAll());
+        $form = $this->createFormBuilder()
+            ->add('name')
+            ->add('country')
+            ->add('city')
+            ->getForm();
 
-        return $this->render('home.html.twig');
+        return $this->renderForm('home.html.twig', compact('form'));
     }
 }

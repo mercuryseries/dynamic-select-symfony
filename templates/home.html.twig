@@ -3,5 +3,9 @@
 {% block title 'Home' %}
 
 {% block body %}
-	<h1>Liste Dynamique Demo</h1>
+	<h1>S'enregistrer</h1>
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
 {% endblock %}
