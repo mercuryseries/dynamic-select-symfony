@@ -1,21 +1,28 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/base.html.twig' %}
 
-{% block title 'Home' %}
+{% block title 'Contact' %}
 
 {% block body %}
-	<h1>Laisser un message</h1>
+    <div class="row">
+        <div class="col-6 mx-auto">
+            <h1 class="display-4 my-5">Are you facing any <span class="text-danger">issues</span> 😔?</h1>
 
-	{{ form_start(form) }}
-        {{ form_widget(form) }}
+            {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.country) }}
+                {{ form_row(form.city) }}
+                {{ form_row(form.message) }}
 
-        <button type="submit">S'enregistrer</button>
-	{{ form_end(form) }}
+                <button type="submit" class="btn btn-primary w-100" formnovalidate>Send</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
 	<script>
         document.addEventListener('DOMContentLoaded', function() {
-            const countrySelectEl = document.getElementById('form_country');
+            const countrySelectEl = document.getElementById('ticket_form_country');
 
             countrySelectEl.addEventListener('change', function(e) {
                 const formEl = countrySelectEl.closest('form');
@@ -28,7 +35,7 @@
                 .then((html) => {
                     var parser = new DOMParser();
 	                var doc = parser.parseFromString(html, 'text/html');
-                    document.getElementById('form_city').replaceWith(doc.getElementById('form_city'));
+                    document.getElementById('ticket_form_city').replaceWith(doc.getElementById('ticket_form_city'));
                 })
                 .catch(function (err) {
                     console.warn('Something went wrong.', err);
