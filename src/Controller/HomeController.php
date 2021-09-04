@@ -21,20 +21,16 @@ class HomeController extends AbstractController
             ->add('country', EntityType::class, [
                 'placeholder' => 'Choose a country',
                 'class' => Country::class,
-                'query_builder' => function (CountryRepository $countryRepository) {
-                    return $countryRepository->createQueryBuilder('u')
-                        ->orderBy('u.name', 'ASC');
-                },
+                'query_builder' => fn (CountryRepository $countryRepository) =>
+                $countryRepository->findOrderedByAscNameQueryBuilder(),
                 'choice_label' => 'name'
             ])
             ->add('city', EntityType::class, [
                 'placeholder' => 'Choose a city',
                 'disabled' => true,
                 'class' => City::class,
-                'query_builder' => function (CityRepository $cityRepository) {
-                    return $cityRepository->createQueryBuilder('u')
-                        ->orderBy('u.name', 'ASC');
-                },
+                'query_builder' => fn (CityRepository $cityRepository) =>
+                $cityRepository->findOrderedByAscNameQueryBuilder(),
                 'choice_label' => 'name'
             ])
             ->getForm();
