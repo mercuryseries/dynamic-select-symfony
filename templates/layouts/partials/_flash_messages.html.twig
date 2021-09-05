@@ -1,5 +1,5 @@
 {% for message in app.flashes('success') %}
     <div class="alert alert-success text-center rounded-0 shadow-sm" role="alert">
-        Thanks for your message. We'll get back to you shortly.
+        {{ message }}
     </div>
 {% endfor %}
