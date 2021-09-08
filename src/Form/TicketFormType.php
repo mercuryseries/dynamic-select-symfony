@@ -31,7 +31,7 @@ class TicketFormType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'Choose a country',
                 'query_builder' => fn (CountryRepository $countryRepository) =>
-                $countryRepository->findOrderedByAscNameQueryBuilder()
+                $countryRepository->findAllOrderedByAscNameQueryBuilder()
             ]);
 
         $formModifier = function (FormInterface $form, Country $country = null) {
