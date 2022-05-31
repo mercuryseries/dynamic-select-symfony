@@ -38,7 +38,7 @@
                     body: new FormData(formEl)
                 })
                 .then(response => response.text())
-                .then((html) => {
+                .then(html => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     const newCityFormFieldEl = doc.getElementById('ticket_form_city');
